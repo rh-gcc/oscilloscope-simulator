@@ -8,3 +8,4 @@ Cathode Ray Oscilloscope (CRO) simulator for educational purposes
 * More realisitic phoshor fading
 * Implement bandwidth limitations
 * Vary input waveforms
+* Add SI unit select to frequency input controls
