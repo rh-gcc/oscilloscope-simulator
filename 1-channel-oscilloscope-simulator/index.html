@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Oscilloscope Simulator</title>
+		<script src="main.js"></script>
+		<link rel="stylesheet" href="stylesheet.css">
+	</head>
+	<body>
+		<h1 style="margin-bottom: 0;">1-Channel Oscilloscope Simulator</h1>	
+		<p style="margin-top: 5px; margin-bottom: 20px;"><a href="/2-channel-oscilloscope-simulator">← Switch to 2-Channel Oscilloscope Simulator</a></p>
+		
+		<div id="simulationControls">	
+			<h2>Simulation Controls</h2>
+			<button id="toggleInputControlsDisplay"><span id="showHideInputControlsLabel">Hide</span> Input Signal Parameters</button>
+			<button id="randomiseInputSignalButton">Randomise Input Signal</button>
+			<button id="randomiseOscilloscopeSettingsButton">Randomise Oscilloscope Settings</button>	
+		</div>
+
+		<div id="inputSignalControls">
+			<h2>Input Signal Controls</h2>
+			<label for="inputSignalAmplitude">Amplitude (Vpp)</label>
+			<input id="inputSignalAmplitude" type="number" value=3 min=0.1 max=30 step=0.1 />
+			
+			<label for="inputSignalFrequency">Frequency (Hz)</label>
+			<input id="inputSignalFrequency" type="number" value=1000 min=1 max=100000 step=1 />
+			
+			<label for="inputSignalDCOffset">DC Offset (V)</label>
+			<input id="inputSignalDCOffset" type="number" value=1 min=-15 max=15 step=0.1 />
+		</div>
+
+		<div id="oscilloscope">
+			<div id="oscilloscopeDisplay">
+				<canvas id="scopeCanvas" width=360 height=365 style="background-color: #666; padding: 5px 5px 0 5px;"></canvas>
+			</div>
+			<div id="horzizontalControls">
+				<h2>Horizontal</h2>
+				<label for="timebase">SECS/DIV</label>
+
+				<select id="timebase">
+				    <option value="1">1s</option>
+				    <option value="0.5">500ms</option>
+				    <option value="0.2">200ms</option>
+				    <option value="0.1">100ms</option>
+				    <option value="0.05">50ms</option>
+				    <option value="0.02">20ms</option>
+				    <option value="0.01">10ms</option>
+				    <option value="0.005">5ms</option>
+				    <option value="0.002">2ms</option>
+				    <option value="0.001">1ms</option>
+				    <option value="0.0005" selected>500μs</option>
+				    <option value="0.0002">200μs</option>
+				    <option value="0.0001">100μs</option>
+				    <option value="0.00005">50μs</option>
+				    <option value="0.00002">20μs</option>
+				    <option value="0.00001">10μs</option>
+				    <option value="0.000005">5μs</option>
+				    <option value="0.000002">2μs</option>
+				    <option value="0.000001">1μs</option>
+				</select>
+
+				<label for="xOffset">X Offset</label>
+				<input id="xOffset" type="number" value=0 min=-5 max=5 step=0.1 />
+
+
+			</div>
+			<div id="verticalControls">
+				<h2>Vertical</h2>
+				<label for="ySensitivity">VOLTS/DIV</label>
+
+				<select id="ySensitivity">
+				    <option value="10">10V</option>
+				    <option value="5">5V</option>
+				    <option value="2">2V</option>
+				    <option value="1" selected>1V</option>
+				    <option value="0.5">500mV</option>
+				    <option value="0.2">200mV</option>
+				    <option value="0.1">100mV</option>
+				    <option value="0.05">50mV</option>
+				    <option value="0.02">20mV</option>
+				    <option value="0.01">10mV</option>
+				    <option value="0.005">5mV</option>
+				</select>
+				
+				<label for="yOffset">Y Offset</label>
+				<input id="yOffset" type="number" value=0 min=-5 max=5 step=0.1 />
+				
+				<label for="couplingMode">Coupling</label>
+
+				<select id="couplingMode">
+				    <option value="ac">AC</option>
+				    <option value="gnd">GND</option>
+				    <option value="dc">DC</option>
+				</select>
+			</div>
+			<div id="triggerControls">
+				<h2>Trigger</h2>
+				<label for="triggerMode">Mode</label>
+
+				<select id="triggerMode">
+				    <option value="normal">Normal</option>
+				    <option value="auto">Auto</option>
+				</select>
+				
+				<label for="triggerLevel">Level</label>
+				<input id="triggerLevel" type="number" value=0 min=-3 max=3 step=0.1 />
+			</div>
+		</div>
+		<p>This program is open-source, licenced under <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">GPLv3</a>. View source on <a href="https://github.com/rh-gcc/oscilloscope-simulator">GitHub</a></p>
+	</body>
+</html>
