@@ -142,14 +142,7 @@ const refreshDisplay = () => {
 		// Get scaled vertical offset
 		const verticalOffset = getScaledVerticalOffset(channel);
 
-		let phaseShift = 0;
-		if(i == 1) {
-			// If vertical mode = dual, and this is the second trace being drawn, take into account relative phase difference
-			const triggeredChannel = channelsToDisplay[0];
-			phaseShift = inputSignals[triggeredChannel].phase - inputSignals[channel].phase;
-		}
-
-		drawSignalTrace(amplitude, period, phaseShift, verticalOffset, horizontalOffset, channel, triggerSource, channelsToDisplay.length);	
+		drawSignalTrace(amplitude, period, 0, verticalOffset, horizontalOffset, channel, triggerSource, channelsToDisplay.length);	
 	}
 
 }

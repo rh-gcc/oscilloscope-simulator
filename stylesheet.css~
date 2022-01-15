@@ -60,13 +60,13 @@ body {
 	border: 2px solid black;
 	border-radius: 5px;
 	background-color: #eee;
-	margin-bottom: 20px;
 }
 
 #functionGeneratorControls {
 	text-align: center;
 	display: flex;
 	margin-bottom: 20px;
+	padding-bottom: 20px;
 }
 
 #ch1_functionGenerator, #ch2_functionGenerator {
