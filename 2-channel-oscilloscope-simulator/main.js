@@ -141,7 +141,7 @@ const refreshDisplay = () => {
 		if(i == 1) {
 			// If vertical mode = dual, and this is the second trace being drawn, take into account relative phase difference
 			const triggeredChannel = channelsToDisplay[0];
-			phaseShift = inputSignals[triggeredChannel].phase - inputSignals[channel].phase;
+			phaseShift = Math.abs(inputSignals[triggeredChannel].phase - inputSignals[channel].phase);
 		}
 
 		drawSignalTrace(amplitude, period, phaseShift, verticalOffset, horizontalOffset, channel, triggerSource, channelsToDisplay.length);	
@@ -199,7 +199,7 @@ const drawSignalTrace = async (amplitude, period, phaseShift, vOffset, hOffset, 
 	let yPoints = [];
 	for(let x = 0; x <= scopeCanvas.width * 1.5; x++) {
 		// Get y value for dot at x
-		const y = Math.sin(degreesToRadians(period * (x + phaseShift)));
+		const y = Math.sin(degreesToRadians((period * x) + phaseShift));
 		
 		// Scale y value to get absolute pixel position
 		const yPosition = 178 - (amplitude * y + vOffset) * 180;
