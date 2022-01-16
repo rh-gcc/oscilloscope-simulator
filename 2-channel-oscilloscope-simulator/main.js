@@ -10,11 +10,8 @@ let scopeCanvas, scopeCanvasCtx;
 let triggerPhaseMod = 0; // Used to modify trace phase based on trigger level
 let inputSignalFrequencyInput, inputSignalAmplitudeInput, inputSignalDCOffsetInput;
 let timebaseSelect, xOffsetInput, triggerLevelInput, triggerModeSelect, triggerSourceSelect, verticalModeSelect;
-let verticalControls = { ch1: { ySensitivitySelect: 1, yOffsetInput: 0, couplingModeSelect: "ac" } };
-verticalControls.ch2 = JSON.parse(JSON.stringify(verticalControls.ch1)); // Dereference
-
-let functionGeneratorControls = { ch1: { amplitude: 3, frequency: 1000, dcOffset: 1, phase: 0 } };
-functionGeneratorControls.ch2 = JSON.parse(JSON.stringify(functionGeneratorControls.ch1)); // Dereference
+let verticalControls = { ch1: {}, ch2: {}};
+let functionGeneratorControls = { ch1: {}, ch2: {} };
 
 // Triggering
 let triggered = false;
@@ -76,7 +73,7 @@ const getScaledVerticalOffset = (channel) => {
 
 	// If DC coupling mode, modify vertical offset accordingly
 	if(verticalControls[channel].couplingModeSelect.value == "dc") {
-		verticalOffset += (signalDCOffset / (verticalControls[channel].ySensitivitySelect.value * numberOfDivisions) * 2);
+		verticalOffset += (functionGeneratorControls[channel].dcOffset.value / (verticalControls[channel].ySensitivitySelect.value * numberOfDivisions) * 2);
 	}
 
 	return verticalOffset;
@@ -109,8 +106,6 @@ const refreshDisplay = () => {
 	const triggerLevel = Number(triggerLevelInput.value);
 	const triggerSource = triggerSourceSelect.value;
 	const verticalMode = verticalModeSelect.value;
-
-	console.log("TRIGGER SOURCE:", triggerSource);
 
 	// Scale horizontal offset
 	const horizontalOffset = (xOffset / numberOfDivisions) * 360;
@@ -224,8 +219,6 @@ const drawSignalTrace = async (amplitude, period, phaseShift, vOffset, hOffset, 
 
 	updateTriggerStateIndicator();
 
-	console.log(triggered ? "Triggered!" : "Not triggered");
-
 	// If triggered or trigger is on "auto" mode, draw signal trace
 	if(triggered || triggerModeSelect.value == "auto") {
 		// Find trigger level phase shift (horziontal offset)
@@ -242,8 +235,6 @@ const drawSignalTrace = async (amplitude, period, phaseShift, vOffset, hOffset, 
 				}
 			}
 		}
-
-		console.log("Drawing trace...");
 	
 		// Draw signal trace
 		let x = 0;
@@ -336,9 +327,14 @@ window.onload = () => {
 	scopeCanvasCtx = scopeCanvas.getContext("2d");
 	
 	// Find input signal parameter controls in DOM
-	inputSignalAmplitudeInput = document.getElementById("inputSignalAmplitude");
-	inputSignalFrequencyInput = document.getElementById("inputSignalFrequency");
-	inputSignalDCOffsetInput = document.getElementById("inputSignalDCOffset");
+	for(i = 1; i <= 2; i++) {
+		const channelSettings = functionGeneratorControls["ch" + i];
+
+		channelSettings.amplitude = document.getElementById("ch" + i + "_amplitude");
+		channelSettings.frequency = document.getElementById("ch" + i + "_frequency");
+		channelSettings.dcOffset = document.getElementById("ch" + i + "_dcOffset");
+		channelSettings.phase = document.getElementById("ch" + i + "_phase");
+	}
 
 	// Find oscilloscope settings in DOM
 	timebaseSelect = document.getElementById("timebase");
@@ -358,15 +354,6 @@ window.onload = () => {
 		channelSettings.couplingModeSelect = document.getElementById("ch" + i + "_couplingMode");
 	}
 
-	for(i = 1; i <= 2; i++) {
-		const channelSettings = functionGeneratorControls["ch" + i];
-
-		channelSettings.amplitude = document.getElementById("ch" + i + "_amplitude");
-		channelSettings.frequency = document.getElementById("ch" + i + "_frequency");
-		channelSettings.dcOffset = document.getElementById("ch" + i + "_dcOffset");
-		channelSettings.phase = document.getElementById("ch" + i + "_phase");
-	}
-
 	// Refresh display when any input is interacted with
 	const inputControls = document.querySelectorAll('input, select');
 	
@@ -378,7 +365,7 @@ window.onload = () => {
 
 	// Handle "Show/Hide Input Signal Parameters" button click
 	document.getElementById("toggleInputControlsDisplay").addEventListener('click', (event) => {
-		const inputControls = document.getElementById("inputSignalControls");
+		const inputControls = document.getElementById("functionGenerator");
 		const inputControlsLabel = document.getElementById("showHideInputControlsLabel");
 		
 		// Toggle display state
@@ -394,13 +381,22 @@ window.onload = () => {
 
 	// Handle "Randomise Input Signal" button click
 	document.getElementById("randomiseInputSignalButton").addEventListener('click', (event) => {
-		const settings = [inputSignalAmplitudeInput, inputSignalFrequencyInput, inputSignalDCOffsetInput];
+		let settings = [];
+
+		for(i = 1; i <= 2; i++) {
+			const channel = "ch" + i;
+			for(j = 0; j < Object.keys(functionGeneratorControls[channel]).length; j++) {
+				const control = Object.values(functionGeneratorControls[channel])[j];
+				settings.push(control);
+			}
+		}
+
 		randomiseInputs(settings);
 	});
 
 	// Handle "Randomise Oscilloscope Settings" button click
 	document.getElementById("randomiseOscilloscopeSettingsButton").addEventListener('click', (event) => {
-		const settings = [timebaseSelect, xOffsetInput, ySensitivitySelect, yOffsetInput, couplingModeSelect, triggerLevelInput, triggerModeSelect];
+		const settings = [timebaseSelect, xOffsetInput, triggerLevelInput, triggerModeSelect, triggerSourceSelect, verticalModeSelect, verticalControls["ch1"].ySensitivitySelect, verticalControls["ch1"].yOffsetInput, verticalControls["ch1"].couplingModeSelect, verticalControls["ch2"].ySensitivitySelect, verticalControls["ch2"].yOffsetInput, verticalControls["ch2"].couplingModeSelect];
 		randomiseInputs(settings);
 	});
 

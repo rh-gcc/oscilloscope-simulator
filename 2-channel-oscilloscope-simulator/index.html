@@ -11,7 +11,7 @@
 
 		<div id="simulationControls">	
 			<h2>Simulation Controls</h2>
-			<button id="toggleInputControlsDisplay"><span id="showHideInputControlsLabel">Hide</span> Input Signal Parameters</button>
+			<button id="toggleInputControlsDisplay"><span id="showHideInputControlsLabel">Hide</span> Function Generator</button>
 			<button id="randomiseInputSignalButton">Randomise Input Signal</button>
 			<button id="randomiseOscilloscopeSettingsButton">Randomise Oscilloscope Settings</button>	
 		</div>
@@ -37,7 +37,7 @@
 					<input id="ch1_dcOffset" type="number" value=0 min=-15 max=15 step=0.1 />
 				
 					<label for="ch1_phase">Phase (°)</label>
-					<input id="ch1_phase" type="number" value=0 min=0 max=359 step=0 />
+					<input id="ch1_phase" type="number" value=0 min=0 max=359 step=1 />
 				</div>
 			
 				<div class="verticalDivider"></div>
@@ -57,7 +57,7 @@
 					<input id="ch2_dcOffset" type="number" value=0 min=-15 max=15 step=0.1 />
 				
 					<label for="ch2_phase">Phase (°)</label>
-					<input id="ch2_phase" type="number" value=90 min=0 max=359 step=0 />
+					<input id="ch2_phase" type="number" value=90 min=0 max=359 step=1 />
 					
 					<br /><br />
 				</div>
